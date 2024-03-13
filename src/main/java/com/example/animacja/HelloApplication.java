@@ -36,10 +36,10 @@ public class HelloApplication extends Application {
 
         RotateTransition rotateTransition = new RotateTransition();
         rotateTransition.setInterpolator(Interpolator.LINEAR);
-        rotateTransition.setDuration(Duration.seconds(10));
+        rotateTransition.setDuration(Duration.seconds(8));
         rotateTransition.setNode(coin);
         rotateTransition.setAxis(Rotate.X_AXIS);
-        rotateTransition.setRate(4);
+        rotateTransition.setRate(3);
         rotateTransition.setByAngle(360);
 
 

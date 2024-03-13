@@ -6,7 +6,6 @@ import javafx.scene.shape.Cylinder;
 
 public class coinGenerator {
     Cylinder coin = new Cylinder();
-
     coinGenerator(){
         coin.setRadius(150);
         coin.setHeight(20);
@@ -15,5 +14,13 @@ public class coinGenerator {
         coin.setRotate(180);
 
 
+    }
+
+    public void setCoin(Cylinder coin) {
+        this.coin = coin;
+    }
+
+    public Cylinder getCoin() {
+        return coin;
     }
 }
