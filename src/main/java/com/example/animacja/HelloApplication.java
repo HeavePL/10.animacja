@@ -1,14 +1,20 @@
 package com.example.animacja;
 
-import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.chart.Axis;
+import javafx.scene.control.Button;
+import javafx.scene.input.RotateEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Box;
+import javafx.scene.shape.Cylinder;
 import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -20,37 +26,68 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         Group root = new Group();
 
-        Polygon pentagram = new Polygon();
+        coinGenerator coinGenerator = new coinGenerator();
+        Cylinder coin = coinGenerator.coin;
+        PhongMaterial material = new PhongMaterial();
+        material.setDiffuseColor(Color.GOLD);
+        coin.setMaterial(material);
+        root.getChildren().addAll(coin);
 
-        pentagram.getPoints().addAll(new Double[]{
-                200.0, 50.0,
-                300.0, 150.0,
-                250.0, 250.0,
-                150.0, 250.0,
-                100.0, 150.0,
-        });
 
         RotateTransition rotateTransition = new RotateTransition();
-        rotateTransition.setDuration(Duration.millis(3000));
-        rotateTransition.setNode(pentagram);
+        rotateTransition.setInterpolator(Interpolator.LINEAR);
+        rotateTransition.setDuration(Duration.seconds(10));
+        rotateTransition.setNode(coin);
+        rotateTransition.setAxis(Rotate.X_AXIS);
+        rotateTransition.setRate(4);
         rotateTransition.setByAngle(360);
-        rotateTransition.setCycleCount(-1);
+
+
+        rotateTransition.setCycleCount(Transition.INDEFINITE);
         rotateTransition.setAutoReverse(false);
 
-        ScaleTransition scaleTransition = new ScaleTransition();
-        scaleTransition.setDuration(Duration.millis(6000));
-        scaleTransition.setNode(pentagram);
-        scaleTransition.setByX(-2.5);
-        scaleTransition.setByY(-2.5);
-        scaleTransition.setCycleCount(-1);
-        scaleTransition.setAutoReverse(false);
-        
-        scaleTransition.play();
-        rotateTransition.play();
 
-        pentagram.setFill(Color.AQUAMARINE);
-        root.getChildren().add(pentagram);
-        Scene scene = new Scene(root, 500, 500);
+
+        Button btnStart = new Button();
+        btnStart.setLayoutX(80);
+        btnStart.setLayoutY(400);
+        btnStart.setText("START");
+
+        Button btnStop = new Button();
+        btnStop.setLayoutX(160);
+        btnStop.setLayoutY(400);
+        btnStop.setText("STOP");
+
+        Button btnOne = new Button();
+        btnOne.setLayoutX(230);
+        btnOne.setLayoutY(400);
+        btnOne.setText("STEP");
+
+        Button btnReset = new Button();
+        btnReset.setLayoutX(120);
+        btnReset.setLayoutY(440);
+        btnReset.setText("RESET POSITION");
+
+        btnStart.setOnMouseClicked(mouseEvent -> {
+            rotateTransition.play();
+
+        });
+        btnStop.setOnMouseClicked(mouseEvent -> {
+            rotateTransition.stop();
+        });
+        btnOne.setOnMouseClicked(mouseEvent -> {
+            coin.setRotationAxis(Rotate.X_AXIS);
+            coin.setRotate(coin.getRotate()+3.6);
+        });
+        btnReset.setOnMouseClicked(mouseEvent -> {
+            coin.setRotate(180);
+        });
+
+
+
+        root.getChildren().addAll(btnStart, btnStop, btnOne, btnReset);
+        Scene scene = new Scene(root, 400, 500);
+        scene.setFill(Color.AQUAMARINE);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
